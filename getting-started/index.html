@@ -8,30 +8,73 @@
 
 <body>
   <div id="app">
+    <button>Parent Component</button>
+    <my-component></my-component>
+    <my-local-component></my-local-component>
+  </div>
+
+  <div id="app2">
+    <my-component></my-component>
+    <my-local-component></my-local-component>
+  </div>
+
+  <div id="quiz">
     {{message}}
+    <todo-footer></todo-footer>
   </div>
 
   <script src="https://unpkg.com/vue@2.3.3"></script>
   <script>
+  // Global Component
+    Vue.component('my-component', {
+      template: '<div>A custom component!</div>'
+    });
+
+    // Local Component
+    var cmp = {
+      template: '<div>A local component!</div>'
+    };
+
     new Vue({
       el: '#app',
-      data: {
-        message: 'Hello Vue.js!'
-      },
-      beforCreate: function () {
-        console.log('beforeCreated');
-      },
-      created: function () {
-        console.log("created");
-      },
-      mounted: function () {
-        console.log("mounted");
-        this.message = "1";
-      },
-      updated: function () {
-        console.log("updated");
-      },
+      components: {
+        // 태그명: 컴포넌트의 내용
+        'my-local-component' : cmp
+      }
     })
+
+    new Vue({
+      el: '#app2',
+      components:{
+        'my-local-component': cmp
+      }
+    })
+
+    //퀴즈1
+    Vue.component('todo-item', {
+      template: '<p>This is a child component</p>'
+    })
+
+    Vue.component('todo-footer', {
+      template: '<p>This is another child component</p>'
+    })
+
+    var cmp = {
+      template: '<p>this is another child local component</p>'
+    }
+
+    var app = new Vue({
+      el: '#quiz',
+      data: {
+        message: 'This is a parent component'
+      },
+
+      components:{
+        'todo-footer': cmp
+      }
+    })
+
+
   </script>
 </body>
 
